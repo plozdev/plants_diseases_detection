@@ -15,6 +15,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY") ?: ""}\"")
+
     }
 
     buildTypes {
@@ -36,8 +39,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.viewpager2:viewpager2:1.1.0")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation(libs.viewpager2)
+    implementation(libs.material)
     // --- Core AndroidX & UI ---
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -50,30 +53,30 @@ dependencies {
     implementation(libs.legacy.support.v4)
 
     // --- MVVM architecture ---
-    val lifecycleVersion = "2.8.7"
+//    val lifecycleVersion = "2.8.7"
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.viewmodel)
     // LiveData
-    implementation("androidx.lifecycle:lifecycle-livedata:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.livedata)
     // Saved state module for ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     // Annotation processor
-    annotationProcessor("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
+    annotationProcessor(libs.androidx.lifecycle.compiler)
 
 
     // --- Camera X ---
-    val camerax_version = "1.3.1"
-    implementation ("androidx.camera:camera-core:${camerax_version}")
-    implementation ("androidx.camera:camera-camera2:${camerax_version}")
-    implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
-    implementation ("androidx.camera:camera-view:${camerax_version}")
-    implementation("com.google.guava:guava:31.0.1-android")
+//    val camerax_version = "1.3.1"
+    implementation (libs.androidx.camera.core)
+    implementation (libs.androidx.camera.camera2)
+    implementation (libs.camera.lifecycle)
+    implementation (libs.camera.view)
+    implementation(libs.guava)
 
     // To use CallbackToFutureAdapter
-    implementation("androidx.concurrent:concurrent-futures:1.2.0")
+    implementation(libs.concurrent.futures)
 
     // --- Image loading ---
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.glide)
 
 
     // --- Firebase ---
