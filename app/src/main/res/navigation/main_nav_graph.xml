@@ -1,0 +1,61 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- Trang chủ -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.plantdiseasedetection.fragments.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action android:id="@+id/action_home_to_scan" app:destination="@id/scanFragment" />
+        <action android:id="@+id/action_home_to_chat" app:destination="@id/chatFragment" />
+        <action android:id="@+id/action_home_to_lookup" app:destination="@id/lookupFragment" />
+        <action android:id="@+id/action_home_to_schedule" app:destination="@id/scheduleFragment" />
+    </fragment>
+
+    <!-- Scan Fragment: Chọn ảnh hoặc Camera -->
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.example.plantdiseasedetection.fragments.scan.ScanFragment"
+        tools:layout="@layout/fragment_scan">
+        <action android:id="@+id/action_scanFragment_to_cameraFragment" app:destination="@id/cameraFragment" />
+    </fragment>
+
+    <!-- Camera Fragment: Chụp ảnh -->
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.plantdiseasedetection.fragments.scan.chup.CameraFragment"
+        android:label="Camera"
+        tools:layout="@layout/fragment_camera">
+        <action android:id="@+id/action_cameraFragment_to_previewFragment"
+            app:destination="@id/previewFragment" />
+    </fragment>
+
+    <!-- Preview Fragment: Xem lại ảnh -->
+    <fragment
+        android:id="@+id/previewFragment"
+        android:name="com.example.plantdiseasedetection.fragments.scan.PreviewFragment"
+        android:label="Preview Image"
+        tools:layout="@layout/fragment_preview">
+        <action android:id="@+id/action_previewFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+
+    <!-- Các chức năng khác -->
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.plantdiseasedetection.fragments.ChatFragment"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/lookupFragment"
+        android:name="com.example.plantdiseasedetection.fragments.LookupFragment"
+        tools:layout="@layout/fragment_lookup" />
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.example.plantdiseasedetection.fragments.ScheduleFragment"
+        tools:layout="@layout/fragment_schedule" />
+</navigation>

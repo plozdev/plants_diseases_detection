@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Plant Care</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="analyze">Analyze</string>
+    <string name="analyze...">Analyze…</string>
+    <string name="description">Description</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="detection_result">Detection Result</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+
+    <string name="title">Title</string>
+
+    <string name="recent_activity_null">\uD83C\uDF31 No plant scans yet. Use the camera to scan your first plant!</string>
+    <string name="upcoming_task_null">\uD83D\uDCC5 No upcoming tasks. Schedule your plant care activities!</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="recent_activity">Recent Activity</string>
+    <string name="view_all">View All</string>
+    <string name="upcoming_tasks">Upcoming Tasks</string>
+    <string name="local_weather">Local Weather</string>
+    <string name="scan_plant">Scan Plant</string>
+    <string name="chat_with_ai">Chat with AI</string>
+    <string name="disease_lookup">Disease Lookup</string>
+    <string name="schedule">Schedule</string>
+    <string name="local_weather_null">Unable to load weather data</string>
+</resources>
