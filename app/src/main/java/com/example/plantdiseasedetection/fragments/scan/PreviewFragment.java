@@ -71,7 +71,7 @@ public class PreviewFragment extends Fragment {
     private void analyzeImage() {
         btnRetake.setEnabled(false);
         btnAnalyze.setEnabled(false);
-        btnAnalyze.setText(String.valueOf(R.string.analyze___));
+        btnAnalyze.setText(getString(R.string.analyze___));
         showLoadingWithAnimation(true);
 
         // Giả lập xử lý AI (2 giây)
@@ -94,7 +94,7 @@ public class PreviewFragment extends Fragment {
             startActivity(intent);
             btnRetake.setEnabled(true);
             btnAnalyze.setEnabled(true);
-            btnAnalyze.setText(String.valueOf(R.string.analyze));
+            btnAnalyze.setText(getString(R.string.analyze));
             showLoadingWithAnimation(false);
         }, 2000); // 2 giây
 

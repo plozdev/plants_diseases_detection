@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -87,6 +88,12 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation (libs.com.squareup.retrofit2.converter.gson)
+    implementation (libs.gson)
+    implementation (libs.play.services.location)
 
 
     testImplementation(libs.junit)
