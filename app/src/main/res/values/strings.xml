@@ -24,4 +24,5 @@
     <string name="disease_lookup">Disease Lookup</string>
     <string name="schedule">Schedule</string>
     <string name="local_weather_null">Unable to load weather data</string>
+    <string name="weather_api_key">efab91f4ff125841156a25ee83d848bd</string>
 </resources>

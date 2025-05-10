@@ -4,10 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-
 public class ScanController {
-    private final Context context;
+    private Context context;
 
     public ScanController(Context context) {
         this.context = context;
@@ -30,5 +28,15 @@ public class ScanController {
         // TODO: Tương tự với ảnh từ camera (bitmap)
         Log.d("ScanController", "Đang xử lý ảnh chụp từ camera...");
 //        Toast.makeText(context, "Ảnh đã được gửi xử lý...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void analyzeImage(Uri imageUri, String weather, String location, ScanCallback callback) {
+
+    }
+
+    // Interface callback để xử lý kết quả
+    public interface ScanCallback {
+        void onSuccess(String result);
+        void onFailure(String error);
     }
 }

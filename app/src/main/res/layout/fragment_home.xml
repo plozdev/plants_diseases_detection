@@ -176,6 +176,7 @@
 
 
         <TextView
+            android:id="@+id/localWeather_txt"
             android:text="@string/local_weather_null"
             android:textColor="@android:color/darker_gray"
             android:layout_marginTop="8dp"

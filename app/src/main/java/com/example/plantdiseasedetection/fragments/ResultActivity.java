@@ -59,7 +59,7 @@ public class ResultActivity extends AppCompatActivity {
     private void showResult(String resultText) {
         resultLayout.setVisibility(View.VISIBLE);
         errorLayout.setVisibility(View.GONE);
-        resultTitle.setText(String.valueOf(R.string.detection_result));
+        resultTitle.setText(getString(R.string.detection_result));
         resultDescription.setText(resultText);
     }
 
