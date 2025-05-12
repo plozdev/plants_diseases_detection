@@ -1,6 +1,7 @@
 package com.example.plantdiseasedetection;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,21 +31,23 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
 
-
-        // Ẩn BottomNavigation khi vào camera
+        // Hide BottomNavigation
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int destId = destination.getId();
             if (destId == R.id.homeFragment ||
                 destId == R.id.scanFragment ||
                 destId == R.id.chatFragment ||
-                destId == R.id.lookupFragment ||
-                destId == R.id.scheduleFragment) {
+                destId == R.id.scheduleFragment ||
+                destId == R.id.profileFragment) {
                 binding.bottomNavigation.setVisibility(View.VISIBLE);
             } else {
                 binding.bottomNavigation.setVisibility(View.GONE);
             }
 
         });
+        if (navController == null)
+            Log.e("MainActivity", "NavController is null");
+
     }
     @Override
     public boolean onSupportNavigateUp() {

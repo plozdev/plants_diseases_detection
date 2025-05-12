@@ -36,8 +36,6 @@ public class PreviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_preview, container, false);
-//        previewImage = view.findViewById(R.id.preview_image);
         FragmentPreviewBinding binding = FragmentPreviewBinding.inflate(inflater,container,false);
         btnRetake = binding.btnRetake;
         previewImage = binding.previewImage;
@@ -54,18 +52,12 @@ public class PreviewFragment extends Fragment {
         if (imageBitmap != null)
             previewImage.setImageBitmap(imageBitmap);
 
-
         btnRetake.setOnClickListener(v-> {
             ScanDataHolder.clear();
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_scanFragment_to_cameraFragment);
         });
-
-        btnAnalyze.setOnClickListener(v-> {
-            //do sth
-            analyzeImage();
-//            NavHostFragment.findNavController(this).navigate(R.id.action_previewFragment_to_resultFragment);
-        });
+        btnAnalyze.setOnClickListener(v->analyzeImage());
     }
 
     private void analyzeImage() {
@@ -74,22 +66,28 @@ public class PreviewFragment extends Fragment {
         btnAnalyze.setText(getString(R.string.analyze___));
         showLoadingWithAnimation(true);
 
+        // Read weather from SharedPreferences
+        String weather = requireActivity()
+                .getSharedPreferences("weather_info", MODE_PRIVATE)
+                .getString("weather", "Unknown weather");
+
+        String location = "Location based on your device"; // Đổi thành location nếu bạn muốn
         // Giả lập xử lý AI (2 giây)
         new Handler().postDelayed(() -> {
             // Gọi API lấy kết quả - giả lập với kết quả cứng
             String resultText = "Disease detected: Leaf Spot\nTreatment: Use XYZ spray";
             boolean isSuccessful = true; // Đổi thành kết quả từ API của bạn
 
-            // Lưu kết quả vào ScanDataHolder
+            // Save data in ScanDataHolder
             ScanDataHolder.setResultText(isSuccessful ? resultText : "Detection Not Found");
 
-            // Lưu vào SharedPreferences để hiển thị nhanh trên Home
+            // Saved in SharedPreferences to show at home
             requireActivity().getSharedPreferences("recent_activity", MODE_PRIVATE)
                     .edit()
                     .putString("last_result", ScanDataHolder.getResultText())
                     .apply();
 
-            // Chuyển sang ResultActivity
+            // Go to Result
             Intent intent = new Intent(getActivity(), ResultActivity.class);
             startActivity(intent);
             btnRetake.setEnabled(true);
@@ -99,14 +97,6 @@ public class PreviewFragment extends Fragment {
         }, 2000); // 2 giây
 
     }
-/*
-    private void showLoading(boolean b) {
-        if (loadingOverlay != null) {
-            loadingOverlay.setVisibility(b ? View.VISIBLE : View.GONE);
-        }
-    }
-    */
-
     private void showLoadingWithAnimation(final boolean show) {
         if (loadingOverlay != null) {
             loadingOverlay.setAlpha(show ? 0f : 1f);
@@ -148,6 +138,5 @@ public class PreviewFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        ScanDataHolder.clear();
     }
 }

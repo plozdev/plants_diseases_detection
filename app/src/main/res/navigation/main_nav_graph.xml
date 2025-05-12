@@ -11,8 +11,10 @@
         tools:layout="@layout/fragment_home">
         <action android:id="@+id/action_home_to_scan" app:destination="@id/scanFragment" />
         <action android:id="@+id/action_home_to_chat" app:destination="@id/chatFragment" />
-        <action android:id="@+id/action_home_to_lookup" app:destination="@id/lookupFragment" />
         <action android:id="@+id/action_home_to_schedule" app:destination="@id/scheduleFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <!-- Scan Fragment: Chọn ảnh hoặc Camera -->
@@ -50,12 +52,14 @@
         tools:layout="@layout/fragment_chat" />
 
     <fragment
-        android:id="@+id/lookupFragment"
-        android:name="com.example.plantdiseasedetection.fragments.LookupFragment"
-        tools:layout="@layout/fragment_lookup" />
-
-    <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.example.plantdiseasedetection.fragments.ScheduleFragment"
         tools:layout="@layout/fragment_schedule" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.plantdiseasedetection.fragments.ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+
 </navigation>

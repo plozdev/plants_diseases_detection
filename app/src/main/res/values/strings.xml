@@ -25,4 +25,25 @@
     <string name="schedule">Schedule</string>
     <string name="local_weather_null">Unable to load weather data</string>
     <string name="weather_api_key">efab91f4ff125841156a25ee83d848bd</string>
+    <string name="home">Home</string>
+    <string name="scan">Scan</string>
+    <string name="chat">Chat</string>
+    <string name="profile">Profile</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="ready_to_scan_your_plants">Ready to scan your plants?</string>
+    <string name="scan_des">Take a clear photo or choose one from your gallery to detect diseases and get care recommendations.</string>
+    <string name="check1">Use good lighting</string>
+    <string name="check2">Focus on affected areas</string>
+    <string name="check3">Hold steady</string>
+    <string name="start_camera">Start Camera</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="capture_image">Capture Image</string>
 </resources>

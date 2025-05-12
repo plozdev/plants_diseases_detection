@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
     // Saved state module for ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+    implementation(libs.androidx.annotation)
     // Annotation processor
     annotationProcessor(libs.androidx.lifecycle.compiler)
 

@@ -29,7 +29,7 @@
             android:id="@+id/scanTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scan Plant"
+            android:text="@string/scan_plant"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -44,11 +44,13 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_cap" android:layout_gravity="center_horizontal"
-                    app:tint="#388E3C"/> <TextView
+                    android:src="@drawable/ic_camera" android:layout_gravity="center_horizontal"
+                    app:tint="#388E3C"/>
+
+                <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ready to scan your plants?"
+                android:text="@string/ready_to_scan_your_plants"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -57,7 +59,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Take a clear photo or choose one from your gallery to detect diseases and get care recommendations."
+                    android:text="@string/scan_des"
                     android:textAlignment="center"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
@@ -75,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_check"
                         android:drawablePadding="8dp"
-                        android:text="Use good lighting"
+                        android:text="@string/check1"
                         android:textSize="14sp"
                         android:layout_marginBottom="8dp" />
 
@@ -84,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_check"
                         android:drawablePadding="8dp"
-                        android:text="Focus on affected areas"
+                        android:text="@string/check2"
                         android:textSize="14sp"
                         android:layout_marginBottom="8dp" />
 
@@ -93,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_check"
                         android:drawablePadding="8dp"
-                        android:text="Hold steady"
+                        android:text="@string/check3"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -101,7 +103,7 @@
                     android:id="@+id/btnScan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Start Camera"
+                    android:text="@string/start_camera"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:backgroundTint="#388E3C"
@@ -113,11 +115,12 @@
                 <Button
                     android:id="@+id/btnSelectImage"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    app:icon="@drawable/ic_gallery" app:iconPadding="8dp"
+                    app:icon="@drawable/ic_gallery"
+                    app:iconPadding="8dp"
                     app:iconTint="#388E3C"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Choose from Gallery"
+                    android:text="@string/choose_from_gallery"
                     android:textStyle="bold"
                     android:textAllCaps="false"
                     android:textColor="#388E3C" />

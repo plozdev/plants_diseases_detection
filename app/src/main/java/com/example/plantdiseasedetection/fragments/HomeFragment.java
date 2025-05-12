@@ -54,10 +54,9 @@ public class HomeFragment extends Fragment {
 
         NavController navController = Navigation.findNavController(view);
 
-        binding.btnScan.setOnClickListener(v -> navController.navigate(R.id.action_home_to_scan));
-        binding.btnLookup.setOnClickListener(v -> navController.navigate(R.id.action_home_to_lookup));
+        binding.btnScan.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_home_to_scan));
+
         binding.btnChat.setOnClickListener(v -> navController.navigate(R.id.action_home_to_chat));
-        binding.btnSchedule.setOnClickListener(v -> navController.navigate(R.id.action_home_to_schedule));
     }
 
     @Override
@@ -69,8 +68,8 @@ public class HomeFragment extends Fragment {
 
     private void updateRecentActivity() {
         String lastResult = requireActivity()
-                .getSharedPreferences("recent activity", MODE_PRIVATE)
-                .getString("last result", getString(R.string.recent_activity_null));
+                .getSharedPreferences("recent_activity", MODE_PRIVATE)
+                .getString("last_result", getString(R.string.recent_activity_null));
         binding.recentActivityTxt.setText(lastResult);
     }
 
@@ -83,7 +82,7 @@ public class HomeFragment extends Fragment {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private void getWeatherInfo() {
         if (!isLocationEnabled()) {
-            // Hiển thị thông báo yêu cầu bật vị trí
+            // Show request turn on GPS
             new AlertDialog.Builder(requireContext())
                     .setTitle("Enable Location")
                     .setMessage("Please enable location services to get weather information.")
@@ -95,7 +94,7 @@ public class HomeFragment extends Fragment {
                     .show();
         } else if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            // Quyền đã được cấp, lấy vị trí
+            // Permission accepted, get location
             FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
             locationClient.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
@@ -106,7 +105,7 @@ public class HomeFragment extends Fragment {
             }).addOnFailureListener(e ->updateWeatherUI("Unable to get location"));
 
         } else {
-            // Yêu cầu quyền
+            // Request permission
             ActivityCompat.requestPermissions(requireActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     LOCATION_PERMISSION_REQUEST_CODE);
@@ -125,7 +124,7 @@ public class HomeFragment extends Fragment {
                             String temp = weather.getMain().getTemp() + "°C";
                             String weatherInfo = description + ", " + temp;
 
-                            // Lưu vào SharedPreferences
+                            // Saved in SharedPreferences
                             requireActivity().getSharedPreferences("weather_info", MODE_PRIVATE)
                                     .edit()
                                     .putString("weather", weatherInfo)

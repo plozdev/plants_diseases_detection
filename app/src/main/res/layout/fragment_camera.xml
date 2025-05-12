@@ -33,9 +33,9 @@
             android:id="@+id/capture_button"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/ic_camera"
+            android:src="@drawable/ic_cap"
             android:background="@drawable/white_oval"
-            android:contentDescription="Capture Image"
+            android:contentDescription="@string/capture_image"
             app:tint="@color/green_primary" />
 
     </LinearLayout>

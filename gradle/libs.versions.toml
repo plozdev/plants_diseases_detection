@@ -29,6 +29,7 @@ legacySupportV4 = "1.0.0"
 playServicesLocation = "21.3.0"
 retrofit = "2.9.0"
 viewpager2 = "1.1.0"
+annotation = "1.9.1"
 
 [libraries]
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraView" }
@@ -66,6 +67,7 @@ legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", ver
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
