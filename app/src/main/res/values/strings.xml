@@ -24,7 +24,6 @@
     <string name="disease_lookup">Disease Lookup</string>
     <string name="schedule">Schedule</string>
     <string name="local_weather_null">Unable to load weather data</string>
-    <string name="weather_api_key">efab91f4ff125841156a25ee83d848bd</string>
     <string name="home">Home</string>
     <string name="scan">Scan</string>
     <string name="chat">Chat</string>
@@ -47,4 +46,12 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="capture_image">Capture Image</string>
     <string name="loading">Loading...</string>
+    <string name="helping_plants_stay_healthy">Helping plants stay healthy</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="welcome_to_plant_diseases_detection">Welcome to Plant Diseases Detection</string>
+    <string name="help_your_plants_stay_healthy">Help your plants stay healthy</string>
+    <string name="temperature">Temperature: %1$s°C</string>
+    <string name="humidity">Humidity: %1$s%%</string>
+    <string name="wind_speed">Wind: %1$s m/s</string>
+
 </resources>

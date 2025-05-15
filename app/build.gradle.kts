@@ -114,15 +114,21 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.functions)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
-
+    implementation(libs.google.googleid)
+    implementation(libs.play.services.auth)
     //Retrofit
     implementation(libs.retrofit)
     implementation (libs.com.squareup.retrofit2.converter.gson)
     implementation (libs.gson)
     implementation (libs.play.services.location)
+    implementation (libs.logging.interceptor)
+    implementation (libs.okhttp)
+    implementation (libs.dexter)
+
 
 
     testImplementation(libs.junit)
