@@ -37,6 +37,11 @@ android {
             "WEATHER_API_KEY",
             "\"${properties.getProperty("WEATHER_API_KEY")}\""
         )
+        buildConfigField(
+            "String",
+            "WEB_CLIENT_ID",
+            "\"${properties.getProperty("WEB_CLIENT_ID")}\""
+        )
 
 
     }
@@ -114,20 +119,16 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.functions)
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.storage)
+    implementation ("com.google.firebase:firebase-storage:21.0.1")
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
-    implementation(libs.google.googleid)
-    implementation(libs.play.services.auth)
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
     //Retrofit
     implementation(libs.retrofit)
     implementation (libs.com.squareup.retrofit2.converter.gson)
     implementation (libs.gson)
     implementation (libs.play.services.location)
-    implementation (libs.logging.interceptor)
-    implementation (libs.okhttp)
-    implementation (libs.dexter)
 
 
 

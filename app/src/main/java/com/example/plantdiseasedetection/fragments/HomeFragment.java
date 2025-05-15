@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.plantdiseasedetection.BuildConfig;
 import com.example.plantdiseasedetection.R;
 import com.example.plantdiseasedetection.databinding.FragmentHomeBinding;
 import com.example.plantdiseasedetection.model.GeminiRequest;
@@ -144,7 +145,7 @@ public class HomeFragment extends Fragment {
 
     private void fetchWeather(double lat, double lon) {
         WeatherService weatherService = APIClient.getClient().create(WeatherService.class);
-        weatherService.getCurrentWeather(lat, lon, getString(R.string.weather_api_key), "metric")
+        weatherService.getCurrentWeather(lat, lon, BuildConfig.WEATHER_API_KEY, "metric")
                 .enqueue(new Callback<>() {
                     @Override
                     public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
