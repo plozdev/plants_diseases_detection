@@ -74,7 +74,7 @@
 
                 <TextView
                     android:id="@+id/localWeather_txt"
-                    android:text="Sunny, 27°C"
+                    android:text="@string/loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/darker_gray"
@@ -133,5 +133,19 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnTestGemini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test Gemini API Connection" />
+
+        <TextView
+            android:id="@+id/txtResponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Response will appear here..."
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>

@@ -1,9 +1,15 @@
 package com.example.plantdiseasedetection.controllers;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
+import androidx.annotation.NonNull;
+
+import com.example.plantdiseasedetection.model.GeminiRequest;
+import com.example.plantdiseasedetection.model.GeminiResponse;
+import com.example.plantdiseasedetection.services.APIClient;
+import com.example.plantdiseasedetection.services.APIService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 public class ScanController {
     private Context context;
 
@@ -11,27 +17,42 @@ public class ScanController {
         this.context = context;
     }
 
-    public void processImage(Uri imageUri) {
-        //TODO: gửi ảnh đến server với vị trí và thời tiết
+    public void analyzeImage(String base64Image, String weather, String region, ScanCallback callback) {
+        try {
+            GeminiRequest request = getGeminiRequest(weather, region, base64Image);
 
-        //Gọi API that hoặc thay bằng Retrofit
+            APIService apiService = APIClient.getGeminiClient().create(APIService.class);
+            apiService.analyzeImage(request).enqueue(new Callback<>() {
+                @Override
+                public void onResponse(@NonNull Call<GeminiResponse> call, @NonNull Response<GeminiResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        callback.onSuccess(response.body().getReplyText());
+                    } else {
+                        callback.onFailure("Failed to analyze image. Response code: " + response.code());
+                    }
+                }
 
-        Log.d("ScanController", "Đang xử lý ảnh: " + imageUri.toString());
-
-        // Ví dụ kết quả trả về
-        String fakeResult = "Detected: Powdery mildew (nấm mốc trắng)";
-
-//        Toast.makeText(context, fakeResult, Toast.LENGTH_LONG).show();
+                @Override
+                public void onFailure(@NonNull Call<GeminiResponse> call, @NonNull Throwable t) {
+                    callback.onFailure("Error: " + t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            callback.onFailure("Error: " + e.getMessage());
+        }
     }
 
-    public void processCapturedImage(Bitmap bitmap) {
-        // TODO: Tương tự với ảnh từ camera (bitmap)
-        Log.d("ScanController", "Đang xử lý ảnh chụp từ camera...");
-//        Toast.makeText(context, "Ảnh đã được gửi xử lý...", Toast.LENGTH_SHORT).show();
-    }
+    @NonNull
+    private static GeminiRequest getGeminiRequest(String weather, String region, String base64Image) {
+        String prompt = "I am a farmer in " + region + " of Vietnam. Please analyze the plant image I provided and detect any diseases it may have. Based on the current weather conditions ("
+                + weather + ") and the regional characteristics of (" + region + "), please provide detailed recommendations for Integrated Pest Management (IPM), prioritizing:" +
+                "\n1. Low-cost and locally available materials and methods." +
+                "\n2. Immediate treatments (e.g., pesticides, pruning, biological controls)." +
+                "\n3. Long-term management strategies (crop rotation, resistant varieties)." +
+                "\n4. Preventive measures suitable for this region to minimize future risks." +
+                "\n\nMake your response clear, concise, and directly applicable to farmers.";
 
-    private void analyzeImage(Uri imageUri, String weather, String location, ScanCallback callback) {
-
+        return new GeminiRequest(base64Image, prompt);
     }
 
     // Interface callback để xử lý kết quả

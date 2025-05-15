@@ -1,37 +1,20 @@
 package com.example.plantdiseasedetection.model;
 
+import java.util.List;
+
 public class GeminiRequest {
-    private String imageUri;
-    private String weather;
-    private String location;
+    private List<Content> messages;
 
-    public GeminiRequest(String imageUri, String weather, String location) {
-        this.imageUri = imageUri;
-        this.weather = weather;
-        this.location = location;
+    public GeminiRequest(String b64Img, String prompt) {
+        this.messages = List.of(new Content(b64Img,prompt));
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
+    static class Content {
+        private String role = "user";
+        private String content;
 
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
-    public String getWeather() {
-        return weather;
-    }
-
-    public void setWeather(String weather) {
-        this.weather = weather;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+        public Content(String b64Img, String prompt) {
+            this.content = b64Img + "\n" + prompt;
+        }
     }
 }

@@ -1,27 +1,36 @@
 package com.example.plantdiseasedetection.fragments.scan;
 
 import static android.content.Context.MODE_PRIVATE;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.example.plantdiseasedetection.R;
+import com.example.plantdiseasedetection.controllers.ScanController;
 import com.example.plantdiseasedetection.databinding.FragmentPreviewBinding;
 import com.example.plantdiseasedetection.fragments.ResultActivity;
 import com.example.plantdiseasedetection.fragments.scan.chup.ScanDataHolder;
+import com.example.plantdiseasedetection.utils.ImageUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.List;
+import java.util.Locale;
 
 public class PreviewFragment extends Fragment {
     private ImageView previewImage;
@@ -48,7 +57,7 @@ public class PreviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bitmap imageBitmap = rotateBitmap(ScanDataHolder.getBitmap(), requireActivity().getWindowManager().getDefaultDisplay().getRotation());
+        Bitmap imageBitmap = ImageUtils.rotateBitmap(ScanDataHolder.getBitmap(), requireActivity().getWindowManager().getDefaultDisplay().getRotation());
         if (imageBitmap != null)
             previewImage.setImageBitmap(imageBitmap);
 
@@ -57,45 +66,80 @@ public class PreviewFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_scanFragment_to_cameraFragment);
         });
-        btnAnalyze.setOnClickListener(v->analyzeImage());
+        btnAnalyze.setOnClickListener(v->analyzeImage(imageBitmap));
     }
 
-    private void analyzeImage() {
+    private void analyzeImage(Bitmap imageBitmap) {
         btnRetake.setEnabled(false);
         btnAnalyze.setEnabled(false);
         btnAnalyze.setText(getString(R.string.analyze___));
         showLoadingWithAnimation(true);
 
-        // Read weather from SharedPreferences
+        String base64Image = ImageUtils.bitmapToBase64(imageBitmap);
+
+        // Đọc thời tiết và khu vực từ SharedPreferences
         String weather = requireActivity()
                 .getSharedPreferences("weather_info", MODE_PRIVATE)
                 .getString("weather", "Unknown weather");
 
-        String location = "Location based on your device"; // Đổi thành location nếu bạn muốn
-        // Giả lập xử lý AI (2 giây)
-        new Handler().postDelayed(() -> {
-            // Gọi API lấy kết quả - giả lập với kết quả cứng
-            String resultText = "Disease detected: Leaf Spot\nTreatment: Use XYZ spray";
-            boolean isSuccessful = true; // Đổi thành kết quả từ API của bạn
+        getUserRegion(region -> {
+            if (region == null) region = "Unknown region";
+            sendImageToGemini(base64Image, weather, region);
+        });
+    }
+    // Gửi ảnh và prompt đến Gemini API
+    private void sendImageToGemini(String base64Img, String weather, String region) {
+        ScanController scanController = new ScanController(requireContext());
+        scanController.analyzeImage(base64Img, weather, region, new ScanController.ScanCallback() {
+            @Override
+            public void onSuccess(String result) {
+                ScanDataHolder.setResultText(result);
+                Intent intent = new Intent(getActivity(), ResultActivity.class);
+                btnRetake.setEnabled(true);
+                btnAnalyze.setEnabled(true);
+                startActivity(intent);
 
-            // Save data in ScanDataHolder
-            ScanDataHolder.setResultText(isSuccessful ? resultText : "Detection Not Found");
+            }
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
 
-            // Saved in SharedPreferences to show at home
-            requireActivity().getSharedPreferences("recent_activity", MODE_PRIVATE)
-                    .edit()
-                    .putString("last_result", ScanDataHolder.getResultText())
-                    .apply();
+                btnAnalyze.setText(getString(R.string.analyze));
+                showLoadingWithAnimation(false);
+                btnRetake.setEnabled(true);
+                btnAnalyze.setEnabled(true);
+                Log.e("PreviewFragment", error);
+            }
+        });
+    }
 
-            // Go to Result
-            Intent intent = new Intent(getActivity(), ResultActivity.class);
-            startActivity(intent);
-            btnRetake.setEnabled(true);
-            btnAnalyze.setEnabled(true);
-            btnAnalyze.setText(getString(R.string.analyze));
-            showLoadingWithAnimation(false);
-        }, 2000); // 2 giây
+//    @SuppressLint("MissingPermission")
+    private void getUserRegion(RegionCallback callback) {
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        locationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    if (!addresses.isEmpty()) {
+                        String region = addresses.get(0).getAdminArea();
+                        callback.onRegionDetected(region);
+                    } else {
+                        callback.onRegionDetected(null);
+                    }
+                } catch (Exception e) {
+                    callback.onRegionDetected(null);
+                }
+            } else {
+                callback.onRegionDetected(null);
+            }
+        });
+    }
 
+
+    // Callback cho lấy vùng
+    interface RegionCallback {
+        void onRegionDetected(String region);
     }
     private void showLoadingWithAnimation(final boolean show) {
         if (loadingOverlay != null) {
@@ -116,24 +160,7 @@ public class PreviewFragment extends Fragment {
         }
     }
 
-    private Bitmap rotateBitmap(Bitmap bitmap, int rotation) {
-        android.graphics.Matrix matrix = new android.graphics.Matrix();
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                matrix.postRotate(90);
-                break;
-            case Surface.ROTATION_90:
-                // No rotation needed
-                return bitmap;
-            case Surface.ROTATION_180:
-                matrix.postRotate(270);
-                break;
-            case Surface.ROTATION_270:
-                matrix.postRotate(180);
-                break;
-        }
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
+
 
     @Override
     public void onDestroyView() {

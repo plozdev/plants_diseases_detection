@@ -1,6 +1,8 @@
 package com.example.plantdiseasedetection.fragments.scan;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +19,28 @@ import android.view.ViewGroup;
 import com.example.plantdiseasedetection.R;
 import com.example.plantdiseasedetection.controllers.ScanController;
 import com.example.plantdiseasedetection.databinding.FragmentScanBinding;
+import com.example.plantdiseasedetection.fragments.scan.chup.ScanDataHolder;
+import com.example.plantdiseasedetection.utils.ImageUtils;
+
 public class ScanFragment extends Fragment {
     private FragmentScanBinding binding;
-    private ScanController scanController;
     private ActivityResultLauncher<String> pickImageLauncher;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scanController = new ScanController(requireContext());
 
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri!=null) {
-                        scanController.processImage(uri); //Xu ly
+//                        scanController.processImage(uri); //Xu ly
+                        Bitmap bitmap = ImageUtils.uriToBitmap(requireContext(),uri);
+                        if (bitmap!=null) {
+                            ScanDataHolder.setBitmap(bitmap);
+                            NavController navController = Navigation.findNavController(requireView());
+                            navController.navigate(R.id.action_scanFragment_to_previewFragment);
+                        } else Log.e("ImageUtils", "Failed to convert URI to Bitmap");
                     }
                 });
     }

@@ -23,6 +23,9 @@
         android:name="com.example.plantdiseasedetection.fragments.scan.ScanFragment"
         tools:layout="@layout/fragment_scan">
         <action android:id="@+id/action_scanFragment_to_cameraFragment" app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_previewFragment"
+            app:destination="@id/previewFragment" />
     </fragment>
 
     <!-- Camera Fragment: Chụp ảnh -->

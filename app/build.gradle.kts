@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -16,11 +18,31 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY") ?: ""}\"")
+        val properties = Properties().apply {
+            load(project.rootProject.file("local.properties").inputStream())
+        }
+
+        buildConfigField(
+            "String",
+            "GOOGLE_API_KEY",
+            "\"${properties.getProperty("GOOGLE_API_KEY")}\""
+        )
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"${properties.getProperty("GEMINI_API_KEY")}\""
+        )
+        buildConfigField(
+            "String",
+            "WEATHER_API_KEY",
+            "\"${properties.getProperty("WEATHER_API_KEY")}\""
+        )
+
 
     }
 
     buildTypes {
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -40,6 +62,11 @@ android {
 }
 
 dependencies {
+    configurations.all {
+        exclude(group = "com.intellij", module = "annotations")
+    }
+
+
     implementation(libs.viewpager2)
     implementation(libs.material)
     // --- Core AndroidX & UI ---
@@ -62,6 +89,7 @@ dependencies {
     // Saved state module for ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.room.compiler)
     // Annotation processor
     annotationProcessor(libs.androidx.lifecycle.compiler)
 

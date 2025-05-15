@@ -21,8 +21,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.example.plantdiseasedetection.R;
-import com.example.plantdiseasedetection.controllers.ScanController;
 import com.google.common.util.concurrent.ListenableFuture;
+
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,6 @@ public class CameraFragment extends Fragment {
     private PreviewView previewView;
     private ImageCapture imageCapture;
     private ExecutorService cameraExecutor;
-    private ScanController scanController;
 
     private static final String CAMERA_PERMISSION = android.Manifest.permission.CAMERA;
 
@@ -59,7 +59,6 @@ public class CameraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
         previewView = view.findViewById(R.id.camera_preview);
         view.findViewById(R.id.capture_button).setOnClickListener(v -> takePhoto());
-        scanController = new ScanController(requireContext());
         cameraExecutor = Executors.newSingleThreadExecutor();
 
         return view;
@@ -112,7 +111,6 @@ public class CameraFragment extends Fragment {
                     public void onCaptureSuccess(@NonNull ImageProxy image) {
                         Bitmap bitmap = imageToBitmap(image);
                         image.close();
-                        scanController.processCapturedImage(bitmap);
                         ScanDataHolder.setBitmap(bitmap);
                         Navigation.findNavController(requireView()).navigate(R.id.action_cameraFragment_to_previewFragment);
                     }
@@ -129,10 +127,15 @@ public class CameraFragment extends Fragment {
         ByteBuffer buffer = plane.getBuffer();
         byte[] bytes = new byte[buffer.remaining()];
         buffer.get(bytes);
-
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return compressBitmap(bitmap);
     }
-
+    // Phương thức nén ảnh
+    private Bitmap compressBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream);
+        return BitmapFactory.decodeByteArray(outputStream.toByteArray(), 0, outputStream.size());
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

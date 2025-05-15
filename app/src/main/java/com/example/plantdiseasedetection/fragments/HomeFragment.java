@@ -25,8 +25,11 @@ import android.view.ViewGroup;
 
 import com.example.plantdiseasedetection.R;
 import com.example.plantdiseasedetection.databinding.FragmentHomeBinding;
+import com.example.plantdiseasedetection.model.GeminiRequest;
+import com.example.plantdiseasedetection.model.GeminiResponse;
 import com.example.plantdiseasedetection.model.WeatherResponse;
 import com.example.plantdiseasedetection.services.APIClient;
+import com.example.plantdiseasedetection.services.APIService;
 import com.example.plantdiseasedetection.services.WeatherService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -57,6 +60,8 @@ public class HomeFragment extends Fragment {
         binding.btnScan.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_home_to_scan));
 
         binding.btnChat.setOnClickListener(v -> navController.navigate(R.id.action_home_to_chat));
+
+        binding.btnTestGemini.setOnClickListener(v->testGeminiConnection());
     }
 
     @Override
@@ -65,7 +70,32 @@ public class HomeFragment extends Fragment {
         updateRecentActivity();
         getWeatherInfo();
     }
+    private void testGeminiConnection() {
+        binding.txtResponse.setText("Connecting to Gemini API...");
 
+        // Tạo prompt đơn giản để kiểm tra
+        String prompt = "Test connection to Gemini API. What is the weather in Vietnam?";
+        String base64Image = ""; // Không gửi ảnh để kiểm tra nhanh
+
+        GeminiRequest request = new GeminiRequest(base64Image, prompt);
+
+        APIService apiService = APIClient.getGeminiClient().create(APIService.class);
+        apiService.analyzeImage(request).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<GeminiResponse> call, Response<GeminiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    binding.txtResponse.setText("Success: " + response.body().getReplyText());
+                } else {
+                    binding.txtResponse.setText("Failed: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeminiResponse> call, Throwable t) {
+                binding.txtResponse.setText("Error: " + t.getMessage());
+            }
+        });
+    }
     private void updateRecentActivity() {
         String lastResult = requireActivity()
                 .getSharedPreferences("recent_activity", MODE_PRIVATE)
@@ -123,11 +153,11 @@ public class HomeFragment extends Fragment {
                             String description = weather.getWeather()[0].getDescription();
                             String temp = weather.getMain().getTemp() + "°C";
                             String weatherInfo = description + ", " + temp;
-
+                            weatherInfo = weatherInfo.substring(0,1).toUpperCase()+weatherInfo.substring(1);
                             // Saved in SharedPreferences
                             requireActivity().getSharedPreferences("weather_info", MODE_PRIVATE)
                                     .edit()
-                                    .putString("weather", weatherInfo)
+                                    .putString("weather",weatherInfo )
                                     .apply();
 
                             updateWeatherUI(weatherInfo);
@@ -138,12 +168,24 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
-                        updateWeatherUI("Unable to load weather data");
+//                        updateWeatherUI("Unable to load weather data");
+                        if (!isAdded()) {
+                            return;
+                        }
+
+                        // Handle error
+                        requireActivity().runOnUiThread(() -> {
+                            updateWeatherUI("Weather unavailable");
+                        });
+
                     }
                 });
     }
     private void updateWeatherUI(String weatherText) {
-        binding.localWeatherTxt.setText(weatherText);
+        if (binding != null && isAdded()) {
+            binding.localWeatherTxt.setText(weatherText);
+        }
+
     }
 
 

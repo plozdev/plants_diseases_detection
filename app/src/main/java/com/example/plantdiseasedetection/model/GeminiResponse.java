@@ -1,22 +1,13 @@
 package com.example.plantdiseasedetection.model;
 
 public class GeminiResponse {
-    private String resultText;
-    private boolean success;
+    private String replyText;
 
-    public String getResultText() {
-        return resultText;
+    public String getReplyText() {
+        return replyText;
     }
 
-    public void setResultText(String resultText) {
-        this.resultText = resultText;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setReplyText(String replyText) {
+        this.replyText = replyText;
     }
 }

@@ -4,22 +4,28 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-    private static Retrofit retrofit;
+    private static Retrofit retrofitWeather;
+    private static Retrofit retrofitGemini;
 
+    // Weather API (OpenWeatherMap)
     public static Retrofit getClient() {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
+        if (retrofitWeather == null) {
+            retrofitWeather = new Retrofit.Builder()
                     .baseUrl("https://api.openweathermap.org/data/2.5/") // Weather API URL
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return retrofit;
+        return retrofitWeather;
     }
 
+    // Gemini API (Google Generative Language)
     public static Retrofit getGeminiClient() {
-        return new Retrofit.Builder()
-                .baseUrl("https://api.genai.google.com/") // Gemini API URL
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if (retrofitGemini == null) {
+            retrofitGemini = new Retrofit.Builder()
+                    .baseUrl("https://generativelanguage.googleapis.com/v1beta2/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitGemini;
     }
 }
