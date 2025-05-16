@@ -1,14 +1,17 @@
 package com.example.plantdiseasedetection.fragments;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +22,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +30,16 @@ import android.view.ViewGroup;
 import com.example.plantdiseasedetection.BuildConfig;
 import com.example.plantdiseasedetection.R;
 import com.example.plantdiseasedetection.databinding.FragmentHomeBinding;
-import com.example.plantdiseasedetection.model.GeminiRequest;
-import com.example.plantdiseasedetection.model.GeminiResponse;
+import com.example.plantdiseasedetection.model.ScanResult;
 import com.example.plantdiseasedetection.model.WeatherResponse;
 import com.example.plantdiseasedetection.services.APIClient;
-import com.example.plantdiseasedetection.services.APIService;
 import com.example.plantdiseasedetection.services.WeatherService;
+import com.example.plantdiseasedetection.utils.FirebaseUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,8 +48,17 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding; // ViewBinding
+    private FirebaseFirestore firestore;
 
     public HomeFragment() {}
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        firestore = FirebaseFirestore.getInstance();
+        getWeatherInfo();
+        fetchRecentActivity();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -55,54 +70,78 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         NavController navController = Navigation.findNavController(view);
-
         binding.btnScan.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_home_to_scan));
-
         binding.btnChat.setOnClickListener(v -> navController.navigate(R.id.action_home_to_chat));
 
-        binding.btnTestGemini.setOnClickListener(v->testGeminiConnection());
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Exit App")
+                        .setMessage("Are you sure you want to exit?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            // Exit the app
+                            requireActivity().finishAffinity();
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            // Dismiss the dialog
+                            dialog.dismiss();
+                        })
+                        .show();
+
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateRecentActivity();
         getWeatherInfo();
+        fetchRecentActivity();
     }
-    private void testGeminiConnection() {
-        binding.txtResponse.setText("Connecting to Gemini API...");
-
-        // Tạo prompt đơn giản để kiểm tra
-        String prompt = "Test connection to Gemini API. What is the weather in Vietnam?";
-        String base64Image = ""; // Không gửi ảnh để kiểm tra nhanh
-
-        GeminiRequest request = new GeminiRequest(base64Image, prompt);
-
-        APIService apiService = APIClient.getGeminiClient().create(APIService.class);
-        apiService.analyzeImage(request).enqueue(new Callback<>() {
-            @Override
-            public void onResponse(Call<GeminiResponse> call, Response<GeminiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    binding.txtResponse.setText("Success: " + response.body().getReplyText());
-                } else {
-                    binding.txtResponse.setText("Failed: " + response.code() + " - " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GeminiResponse> call, Throwable t) {
-                binding.txtResponse.setText("Error: " + t.getMessage());
-            }
-        });
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
-    private void updateRecentActivity() {
-        String lastResult = requireActivity()
-                .getSharedPreferences("recent_activity", MODE_PRIVATE)
-                .getString("last_result", getString(R.string.recent_activity_null));
-        binding.recentActivityTxt.setText(lastResult);
+
+
+
+    private void fetchRecentActivity() {
+        String userId = FirebaseUtils.getCurrentUserId();
+        firestore.collection("users")
+                .document(userId)
+                .collection("scan_results")
+                .orderBy("timestamp", Query.Direction.DESCENDING) // Lấy theo thứ tự mới nhất
+                .limit(1) // Chỉ lấy kết quả mới nhất
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                        ScanResult scanResult = document.toObject(ScanResult.class);
+
+                        // Hiển thị kết quả lên giao diện
+                        if (scanResult != null) {
+                            String recentResultText = "🌿 Plant: " + scanResult.getPlant().getType() +
+                                    "\n⚠️ Disease: " + "Healthy" +
+//                                    scanResult.getDiseaseDetected() + -- fake data
+                                    "\n⏰ Scanned on: " + scanResult.getTimestamp().toDate();
+                            binding.recentActivityTxt.setText(recentResultText);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error fetching recent activity", e);
+                    binding.recentActivityTxt.setText("Error fetching recent activity");
+                });
     }
+
+
+
+
+
+
 
     //Method get weather and save in SharePreference
     private boolean isLocationEnabled() {
@@ -185,14 +224,13 @@ public class HomeFragment extends Fragment {
     private void updateWeatherUI(String weatherText) {
         if (binding != null && isAdded()) {
             binding.localWeatherTxt.setText(weatherText);
+            if (weatherText.contains("Rainy")  || weatherText.contains("rainy") ||
+                    weatherText.contains("Thunderstorm") || weatherText.contains("thunderstorm"))
+                binding.weatherIcon.setImageResource(R.drawable.ic_rain);
         }
 
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+
 }

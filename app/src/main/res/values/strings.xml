@@ -48,10 +48,25 @@
     <string name="loading">Loading...</string>
     <string name="helping_plants_stay_healthy">Helping plants stay healthy</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="welcome_to_plant_diseases_detection">Welcome to Plant Diseases Detection</string>
+    <string name="welcome_to_plant_diseases_detection">Welcome to\n Plant Diseases Detection</string>
     <string name="help_your_plants_stay_healthy">Help your plants stay healthy</string>
     <string name="temperature">Temperature: %1$s°C</string>
     <string name="humidity">Humidity: %1$s%%</string>
     <string name="wind_speed">Wind: %1$s m/s</string>
+
+    <string name="image_required">Please provide an image of your plant</string>
+
+    <string name="disease">1. No clear signs of major diseases such as fungal spots, bacterial blight, or severe pest damage were observed.\n
+        2.The leaves appear generally healthy, with a few minor variations in texture that may be due to natural variations or slight nutrient imbalances.</string>
+    <string name="treatment">Since the plant appears healthy:\n
+        1. Regularly inspect leaves for early signs of pests (e.g., aphids, mites) or diseases (e.g., fungal spots).\n
+        2.Maintain adequate soil moisture without overwatering.\n
+        3.Apply organic fertilizer (compost or manure) every 4-6 weeks to ensure balanced nutrition.\n
+        4.If any unusual symptoms appear (spots, yellowing), consider using neem oil or mild organic fungicides as a preventive measure.</string>
+    <string name="preventative">1. Ensure proper spacing between plants to allow good airflow.\n
+        2. Regularly prune and remove any damaged or old leaves.\n
+        3. Use clean tools for pruning to avoid spreading diseases.\n
+        4. Rotate crops periodically to prevent soil-borne diseases.\n
+        5. Consider applying a balanced organic fertilizer to maintain strong plant growth.</string>
 
 </resources>

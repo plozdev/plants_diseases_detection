@@ -5,12 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Base64;
-import android.view.Surface;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-
 public class ImageUtils {
+
+
     public static Bitmap uriToBitmap(Context context, Uri uri) {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(uri);
@@ -22,39 +21,31 @@ public class ImageUtils {
         }
     }
     public static String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+        if (bitmap == null) {
+            return null; // Return null if the bitmap is null.
+        }
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try {
+            // Compress the bitmap to JPEG format with 90% quality. You can adjust the format and quality as needed.
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+
+            // Convert the compressed byte array into a Base64 string.
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle any exceptions during conversion.
+            return null;
+        } finally {
+            try {
+                byteArrayOutputStream.close(); // Close the stream after use.
+            } catch (Exception ignored) {
+            }
+        }
     }
 
-    public static String uriToBase64(Context context, Uri uri) {
-        try {
-            InputStream inputStream = context.getContentResolver().openInputStream(uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
-            return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public static Bitmap rotateBitmap(Bitmap bitmap, int rotation) {
-        android.graphics.Matrix matrix = new android.graphics.Matrix();
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                matrix.postRotate(90);
-                break;
-            case Surface.ROTATION_90:
-                // No rotation needed
-                return bitmap;
-            case Surface.ROTATION_180:
-                matrix.postRotate(270);
-                break;
-            case Surface.ROTATION_270:
-                matrix.postRotate(180);
-                break;
-        }
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
+
+
 }
+

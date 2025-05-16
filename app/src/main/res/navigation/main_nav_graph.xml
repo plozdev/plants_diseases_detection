@@ -20,44 +20,31 @@
     <!-- Scan Fragment: Chọn ảnh hoặc Camera -->
     <fragment
         android:id="@+id/scanFragment"
-        android:name="com.example.plantdiseasedetection.fragments.scan.ScanFragment"
-        tools:layout="@layout/fragment_scan">
-        <action android:id="@+id/action_scanFragment_to_cameraFragment" app:destination="@id/cameraFragment" />
-        <action
-            android:id="@+id/action_scanFragment_to_previewFragment"
-            app:destination="@id/previewFragment" />
-    </fragment>
+        android:name="com.example.plantdiseasedetection.fragments.ScanFragment"
+        tools:layout="@layout/fragment_scan"/>
 
     <!-- Camera Fragment: Chụp ảnh -->
-    <fragment
-        android:id="@+id/cameraFragment"
-        android:name="com.example.plantdiseasedetection.fragments.scan.chup.CameraFragment"
-        android:label="Camera"
-        tools:layout="@layout/fragment_camera">
-        <action android:id="@+id/action_cameraFragment_to_previewFragment"
-            app:destination="@id/previewFragment" />
-    </fragment>
 
     <!-- Preview Fragment: Xem lại ảnh -->
-    <fragment
-        android:id="@+id/previewFragment"
-        android:name="com.example.plantdiseasedetection.fragments.scan.PreviewFragment"
-        android:label="Preview Image"
-        tools:layout="@layout/fragment_preview">
-        <action android:id="@+id/action_previewFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
-    </fragment>
 
     <!-- Các chức năng khác -->
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.example.plantdiseasedetection.fragments.ChatFragment"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.example.plantdiseasedetection.fragments.ScheduleFragment"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_scheduleFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"

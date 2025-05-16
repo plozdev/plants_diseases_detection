@@ -63,6 +63,11 @@ public class LoginActivity extends AppCompatActivity {
             signInLauncher.launch(mGoogleSignInClient.getSignInIntent());
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)

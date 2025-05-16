@@ -24,9 +24,10 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="@string/scan_plant"
                 android:layout_width="0dp"
+                android:fontFamily="@font/font"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/green_primary"
+                android:backgroundTint="@color/green_dark"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp" />
 
@@ -34,6 +35,7 @@
                 android:id="@+id/btnChat"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="@string/chat_with_ai"
+                android:fontFamily="@font/font"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -69,6 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
+                    android:fontFamily="@font/font"
                     android:textStyle="bold"
                     android:textColor="@color/black" />
 
@@ -77,6 +80,7 @@
                     android:text="@string/loading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/font"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
                     android:layout_marginTop="4dp" />
@@ -97,6 +101,7 @@
                 android:text="@string/recent_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/font"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -104,12 +109,13 @@
                 android:id="@+id/recentActivity_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/font"
                 android:text="@string/recent_activity_null"
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <!-- Recent Activity -->
+        <!-- Upcoming Tasks -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -123,29 +129,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
+                android:fontFamily="@font/font"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/upcomingTask_txt"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/font"
                 android:layout_height="wrap_content"
                 android:text="@string/upcoming_task_null"
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnTestGemini"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test Gemini API Connection" />
-
-        <TextView
-            android:id="@+id/txtResponse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Response will appear here..."
-            android:textSize="16sp"
-            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>

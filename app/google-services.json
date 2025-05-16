@@ -12,7 +12,36 @@
           "package_name": "com.example.plantdiseasedetection"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "302323765197-eq6l2d9m5f1mpuf087vdb0v62322cin3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.plantdiseasedetection",
+            "certificate_hash": "e78b35c8bfb7d0fc3a6c78e1f0151daf196dfff1"
+          }
+        },
+        {
+          "client_id": "302323765197-g997puli8v7vr0dvlkf8njv32ij64k30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.plantdiseasedetection",
+            "certificate_hash": "015fd4f7ff29e98ddb7955f06cbea9e5c9d0a681"
+          }
+        },
+        {
+          "client_id": "302323765197-ntlbgpemf53fkcn9m05k9b9sb0knkbok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.plantdiseasedetection",
+            "certificate_hash": "ed74068ab4f8ee80d7350720255b2c2fbefa2fb7"
+          }
+        },
+        {
+          "client_id": "302323765197-hpcc0iarng1n68t7ba9r223g46fq2acn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDaUkgo8-8HSZ5ZYfjk4WhlyMoha2HDDIg"
@@ -20,7 +49,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302323765197-hpcc0iarng1n68t7ba9r223g46fq2acn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,50 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/chatLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".fragments.ChatFragment">
 
-    <!-- Chat messages -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewChat"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:clipToPadding="false" />
-
-    <!-- Input field -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:padding="8dp"
-        android:orientation="horizontal"
-        android:elevation="4dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <EditText
-            android:id="@+id/editTextMessage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <!-- Chat messages -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewChat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Ask about plant care..."
-            android:padding="10dp"
-            android:background="@drawable/bg_input"
-            android:textSize="14sp" />
+            android:padding="16dp"
+            android:clipToPadding="false" />
 
-        <ImageButton
-            android:id="@+id/btnSend"
+        <!-- Input field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:elevation="4dp">
+
+            <EditText
+                android:id="@+id/editTextMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ask about plant care..."
+
+                android:fontFamily="@font/font"
+                android:padding="10dp"
+                android:background="@drawable/bg_input"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_send"
+                android:contentDescription="Send"
+                android:layout_gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                app:tint="@color/green_primary" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+    <!-- Deactive Overlay -->
+    <LinearLayout
+        android:id="@+id/deactive"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#80000000"
+        android:elevation="1000dp"
+        android:visibility="gone">
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_send"
-            android:contentDescription="Send"
-            android:layout_gravity="center_vertical"
-            android:paddingHorizontal="8dp"
-            app:tint="@color/green_primary" />
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:background="@drawable/bg_card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Function Developing!"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="2dp"
+                android:src="@drawable/ic_sad"
+                app:tint="@android:color/holo_red_dark"
+                android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="This feature is under development."
+                android:textColor="@color/text_primary_dark"
+                android:layout_marginVertical="8dp"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Back" />
+
+        </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
